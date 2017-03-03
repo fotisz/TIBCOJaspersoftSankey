@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.2.0.final using JasperReports Library version 6.2.0  -->
+<!-- 2016-06-09T11:05:26 -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Sankey" pageWidth="960" pageHeight="720" columnWidth="920" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="31c5bd3e-7f1a-4ab1-b4e4-a617f592984c">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="ireport.jasperserver.url" value="http://14.141.42.122:8080/ppmreports/"/>
+	<property name="ireport.jasperserver.user" value="developer|claritydev"/>
+	<property name="ireport.jasperserver.report.resource" value="/Test/Sankey_OBS_files/main_jrxml"/>
+	<property name="ireport.jasperserver.reportUnit" value="/Test/Sankey_OBS"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="PARAM_OBS_TYPE" class="java.util.Collection"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT T.NAME OBS_TYPE ,U.NAME UNIT_NAME,U1.NAME PARENT_UNIT,U.DEPTH DEPTH
+FROM PRJ_OBS_TYPES T
+LEFT JOIN PRJ_OBS_UNITS U ON U.TYPE_ID=T.ID
+LEFT JOIN PRJ_OBS_UNITS U1 ON U.PARENT_ID=U1.ID
+WHERE U.UNIQUE_NAME IS NOT NULL
+AND U1.UNIQUE_NAME IS NOT NULL
+AND $X{IN,T.ID,PARAM_OBS_TYPE}]]>
+	</queryString>
+	<field name="OBS_TYPE" class="java.lang.String"/>
+	<field name="UNIT_NAME" class="java.lang.String"/>
+	<field name="PARENT_UNIT" class="java.lang.String"/>
+	<field name="DEPTH" class="java.math.BigDecimal"/>
+	<title>
+		<band height="655" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="920" height="655" uuid="fbb36477-0a3a-4763-98ce-94237b08671e">
+					<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+				</reportElement>
+				<cvc:customvisualization xmlns:cvc="http://www.jaspersoft.com/cvcomponent" xsi:schemaLocation="http://www.jaspersoft.com/cvcomponent http://www.jaspersoft.com/cvcomponent/component.xsd" evaluationTime="Report">
+					<cvc:itemProperty name="script" value="Sankey.min.js"/>
+					<cvc:itemProperty name="module" value="Sankey"/>
+					<cvc:itemProperty name="css" value="Sankey.css"/>
+					<cvc:cvData>
+						<dataset/>
+						<cvc:item>
+							<cvc:itemProperty name="category">
+								<valueExpression><![CDATA[$F{PARENT_UNIT}]]></valueExpression>
+							</cvc:itemProperty>
+							<cvc:itemProperty name="subcategory">
+								<valueExpression><![CDATA[$F{UNIT_NAME}]]></valueExpression>
+							</cvc:itemProperty>
+							<cvc:itemProperty name="val">
+								<valueExpression><![CDATA[$F{DEPTH}]]></valueExpression>
+							</cvc:itemProperty>
+						</cvc:item>
+					</cvc:cvData>
+				</cvc:customvisualization>
+			</componentElement>
+		</band>
+	</title>
+</jasperReport>
